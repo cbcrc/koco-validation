@@ -1,0 +1,19 @@
+{
+  "name": "rc.component.knockout-bootstrap-validation",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Allov/rc.component.knockout-bootstrap-validation.git"
+  },
+  "author": "Allov & w3max",
+  "license": "MIT",
+  "bugs": {
+    "url": "rc.component.knockout-bootstrap-validation.js/issues"
+  },
+  "homepage": "https://github.com/Allov/rc.component.knockout-bootstrap-validation"
+}
