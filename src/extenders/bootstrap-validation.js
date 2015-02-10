@@ -2,6 +2,7 @@ define(['knockout', 'jquery'],
     function(ko, $) {
         "use strict";
 
+        //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
         ko.extenders.bootstrapValidation = function(target) {
             for (var i in target()) {
                 if (ko.validation.utils.isValidatable(target()[i])) {
