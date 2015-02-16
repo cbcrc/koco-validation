@@ -9,7 +9,7 @@ define(['knockout', 'jquery'],
                     extendProperty(target()[i]);
                 }
             }
-            
+
             target.isValidating = ko.computed(function() {
                 return !!target.errors.find(function(obsv) {
                     return ko.validation.utils.isValidatable(obsv) && obsv.isValidating();
@@ -17,23 +17,26 @@ define(['knockout', 'jquery'],
             });
 
             target.isValidAsync = function() {
-                var deferred = new $.Deferred();
-                for (var i in target()) {
-                    if (ko.validation.utils.isValidatable(target()[i])) {
-                        target()[i].validate();
+                return new $.Deferred(function(dfd) {
+                    try {
+                        for (var i in target()) {
+                            if (ko.validation.utils.isValidatable(target()[i])) {
+                                target()[i].validate();
+                            }
+                        }
+
+                        if (!target.isValidating()) {
+                            dfd.resolve(target.isValid());
+                        } else {
+                            var subscription = target.isValidating.subscribe(function() {
+                                dfd.resolve(target.isValid());
+                                subscription.dispose();
+                            });
+                        }
+                    } catch (err) {
+                        dfd.reject(err);
                     }
-                }
-
-                if (!target.isValidating()) {
-                    deferred.resolve(target.isValid());
-                } else {
-                    var subscription = target.isValidating.subscribe(function() {
-                        deferred.resolve(target.isValid());
-                        subscription.dispose();
-                    });
-                }
-
-                return deferred.promise();
+                }).promise();
             };
 
             //return the original observable
