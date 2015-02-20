@@ -53,9 +53,10 @@ define(['knockout', 'jquery'],
                 var cssClass = '';
                 var message = '';
 
-                if (target.isValidating()) {
-                    if (target.validatingMessage) {
-                        cssClass = 'has-warning';
+                var isValidating = target.isValidating();
+                if (isValidating) {
+                    if (isValidating === true && target.validatingMessage) {
+                        //cssClass = 'has-warning';
                         message = target.validatingMessage;
                     }
                 } else {
@@ -66,9 +67,8 @@ define(['knockout', 'jquery'],
                             message = target.validMessage;
                         }
                     } else {
-                        cssClass = 'has-error';
-
                         if (target.error) {
+                            cssClass = 'has-error';
                             message = target.error();
                         }
                     }
