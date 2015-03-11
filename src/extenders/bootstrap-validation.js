@@ -4,11 +4,7 @@ define(['knockout', 'jquery'],
 
         //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
         ko.extenders.bootstrapValidation = function(target) {
-            for (var i in target()) {
-                if (ko.validation.utils.isValidatable(target()[i])) {
-                    extendProperty(target()[i]);
-                }
-            }
+            extendProperties(target);
 
             target.isValidating = ko.computed(function() {
                 return !!target.errors.find(function(obsv) {
@@ -39,11 +35,29 @@ define(['knockout', 'jquery'],
                 }).promise();
             };
 
+            target.subscribe(function () {
+                extendProperties(target);
+            });
+
             //return the original observable
             return target;
         };
 
+        function extendProperties(target) {
+            var i, property;
+            for (i in target()) {
+                property = target()[i];
+                if (ko.validation.utils.isValidatable(property)) {
+                    extendProperty(property);
+                }
+            }
+        }
+
         function extendProperty(target) {
+            if (target.validate) {
+                return;
+            }
+
             //add some sub-observables to our observable
             target.formGroupValidationCssClass = ko.observable('');
             target.helpBlockValidationMessage = ko.observable('');
