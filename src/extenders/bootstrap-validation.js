@@ -44,11 +44,21 @@ define(['knockout', 'jquery'],
         };
 
         function extendProperties(target) {
-            var i, property;
-            for (i in target()) {
-                property = target()[i];
-                if (ko.validation.utils.isValidatable(property)) {
-                    extendProperty(property);
+            traverse(target(), function(key, value) {
+                if (ko.validation.utils.isValidatable(value)) {
+                    extendProperty(value);
+                }
+            });
+        }
+
+        function traverse(o, func) {
+            var self = this;
+
+            for (var i in o) {
+                func.apply(self, [i, o[i]]);
+                if (o[i] !== null && typeof(o[i]) === 'object') {
+                    //going on step down in the object tree!!
+                    traverse(o[i], func);
                 }
             }
         }
