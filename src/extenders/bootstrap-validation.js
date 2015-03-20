@@ -7,9 +7,15 @@ define(['knockout', 'jquery'],
             extendProperties(target);
 
             target.isValidating = ko.computed(function() {
-                return !!target.errors.find(function(obsv) {
-                    return ko.validation.utils.isValidatable(obsv) && obsv.isValidating();
-                });
+                if (target.errors) {
+                    return !!target.errors.find(function(obsv) {
+                        return ko.validation.utils.isValidatable(obsv) && obsv.isValidating();
+                    });
+                } else if (target.error) {
+                    return ko.validation.utils.isValidatable(target) && target.isValidating();
+                }
+
+                return false;
             });
 
             target.isValidAsync = function() {
