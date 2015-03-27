@@ -1,5 +1,5 @@
-define(['knockout', 'jquery'],
-    function(ko, $) {
+define(['knockout', 'jquery', 'lodash'],
+    function(ko, $, _) {
         'use strict';
 
         //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
@@ -60,13 +60,15 @@ define(['knockout', 'jquery'],
         function traverse(o, func) {
             var self = this;
 
-            for (var i in o) {
-                func.apply(self, [i, o[i]]);
-                if (o[i] !== null && typeof(o[i]) === 'object') {
-                    //going on step down in the object tree!!
-                    traverse(o[i], func);
+            _.forIn(o, function(value, key) {
+                if (key !== '__ko_mapping__') {
+                    func.apply(self, [key, value]);
+
+                    if (value !== null && typeof(value) === 'object') {
+                        traverse(value, func);
+                    }
                 }
-            }
+            });
         }
 
         function extendProperty(target) {
