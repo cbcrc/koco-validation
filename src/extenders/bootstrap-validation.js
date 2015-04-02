@@ -22,7 +22,7 @@ define(['knockout', 'jquery', 'lodash'],
                 return new $.Deferred(function(dfd) {
                     try {
                         traverse(target(), function(key, value) {
-                            if (ko.validation.utils.isValidatable(value)) {
+                            if (ko.validation.utils.isValidatable(value) && value.validate) {
                                 value.validate();
                             }
                         });
