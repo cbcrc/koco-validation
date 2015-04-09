@@ -1,8 +1,8 @@
 // Copyright (c) CBC/Radio-Canada. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-define(['knockout', 'jquery'],
-    function(ko, $) {
+define(['knockout', 'jquery', 'lodash'],
+    function(ko, $, _) {
         'use strict';
 
         //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
@@ -10,16 +10,22 @@ define(['knockout', 'jquery'],
             extendProperties(target);
 
             target.isValidating = ko.computed(function() {
-                return !!target.errors.find(function(obsv) {
-                    return ko.validation.utils.isValidatable(obsv) && obsv.isValidating();
-                });
+                if (target.errors) {
+                    return !!target.errors.find(function(obsv) {
+                        return ko.validation.utils.isValidatable(obsv) && obsv.isValidating();
+                    });
+                } else if (target.error) {
+                    return ko.validation.utils.isValidatable(target) && target.isValidating();
+                }
+
+                return false;
             });
 
             target.isValidAsync = function() {
                 return new $.Deferred(function(dfd) {
                     try {
                         traverse(target(), function(key, value) {
-                            if (ko.validation.utils.isValidatable(value)) {
+                            if (ko.validation.utils.isValidatable(value) && value.validate) {
                                 value.validate();
                             }
                         });
@@ -57,13 +63,15 @@ define(['knockout', 'jquery'],
         function traverse(o, func) {
             var self = this;
 
-            for (var i in o) {
-                func.apply(self, [i, o[i]]);
-                if (o[i] !== null && typeof(o[i]) === 'object') {
-                    //going on step down in the object tree!!
-                    traverse(o[i], func);
+            _.forIn(o, function(value, key) {
+                if (key !== '__ko_mapping__') {
+                    func.apply(self, [key, value]);
+
+                    if (value !== null && typeof(value) === 'object') {
+                        traverse(value, func);
+                    }
                 }
-            }
+            });
         }
 
         function extendProperty(target) {
