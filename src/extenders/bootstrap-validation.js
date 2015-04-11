@@ -82,21 +82,25 @@ define(['knockout', 'jquery', 'lodash'],
             //add some sub-observables to our observable
             target.formGroupValidationCssClass = ko.observable('');
             target.helpBlockValidationMessage = ko.observable('');
+            target.feedbackValidationCssClass = ko.observable('');
 
             //define a function to do validation
             target.validate = function() {
                 var cssClass = '';
+                var feedbackClass = '';
                 var message = '';
 
                 var isValidating = target.isValidating();
                 if (isValidating) {
                     if (isValidating === true && target.validatingMessage) {
                         //cssClass = 'has-warning';
+                        feedbackClass = 'fa fa-pulse fa-spin';
                         message = target.validatingMessage;
                     }
                 } else {
                     if (target.isValid()) {
                         cssClass = 'has-success';
+                        feedbackClass = 'fa fa-check';
 
                         if (target.validMessage) {
                             message = target.validMessage;
@@ -104,12 +108,14 @@ define(['knockout', 'jquery', 'lodash'],
                     } else {
                         if (target.error) {
                             cssClass = 'has-error';
+                            feedbackClass = 'fa fa-times';
                             message = target.error();
                         }
                     }
                 }
 
                 target.formGroupValidationCssClass(cssClass);
+                target.feedbackValidationCssClass(feedbackClass);
                 target.helpBlockValidationMessage(message);
             };
 
