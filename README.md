@@ -1,10 +1,10 @@
-# Knockout Bootstrap Validation
+# koco validation
 
-A small set of binding handlers and extenders to support Bootstrap validations.
+A set of utilities to help with Bootstrap & Knockout-Validation.
 
 ## Installation
 
-    bower install knockout-bootstrap-validation
+    bower install koco-validation
 
 ## Features
 

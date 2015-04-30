@@ -1,6 +1,6 @@
 {
-  "name": "knockout-bootstrap-validation",
-  "version": "0.1.0",
+  "name": "koco-validation",
+  "version": "0.2.0",
   "description": "",
   "main": "",
   "scripts": {
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cbcrc/knockout-bootstrap-validation"
+    "url": "https://github.com/cbcrc/koco-validation"
   },
   "author": "Frédérik Charest & Maxime Séguin",
   "license": "MIT",
   "bugs": {
-    "url": "knockout-bootstrap-validation/issues"
+    "url": "koco-validation/issues"
   },
-  "homepage": "https://github.com/cbcrc/knockout-bootstrap-validation"
+  "homepage": "https://github.com/cbcrc/koco-validation"
 }

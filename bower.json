@@ -1,10 +1,10 @@
 {
-  "name": "rc.component.knockout-bootstrap-validation",
-  "version": "0.1.0",
+  "name": "koco-validation",
+  "version": "0.2.0",
   "authors": [
     "Frédérik Charest & Maxime Séguin"
   ],
-  "description": "",
+  "description": "A set of utilities to help with Bootstrap & Knockout-Validation.",
   "main": "",
   "moduleType": [
     "amd"
