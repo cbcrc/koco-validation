@@ -5,9 +5,9 @@ define(['jquery', 'lodash'],
     function($, _) {
         'use strict';
 
-        var KnockoutValidationUtilities = function KnockoutValidationUtilities() {};
+        var ValidationUtilities = function ValidationUtilities() {};
 
-        KnockoutValidationUtilities.prototype.validateObservables = function (validatedObservables) {
+        ValidationUtilities.prototype.validateObservables = function (validatedObservables) {
             var promise = new $.Deferred(function(dfd) {
                 if (_.isEmpty(validatedObservables)) {
                     // When passing an empty array of validated observables, the form is considered valid.
@@ -40,5 +40,5 @@ define(['jquery', 'lodash'],
             return promise;
         };
 
-        return new KnockoutValidationUtilities();
+        return new ValidationUtilities();
     });
