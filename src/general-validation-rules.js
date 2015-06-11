@@ -22,7 +22,7 @@ define(['knockout'], function(ko) {
         target.subscribe(function() {
             // force knockout validation to rerun validation on dependency
             ko.validation.validateObservable(dependency);
-            // update UI (validate() is defined in validation-utilities.js)
+            // update UI (validate() is defined in bootstrap-validation-extender.js)
             dependency.validate();
         });
         return target;
