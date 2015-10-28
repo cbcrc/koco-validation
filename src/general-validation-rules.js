@@ -28,6 +28,14 @@ define(['knockout'], function(ko) {
         message: 'This field only accepts url-safe characters (alphanumeric or underscore / dash)'
     };
 
+    // useful for checking if a checkbox has been checked.
+    ko.validation.rules['notEmpty'] = {
+        validator: function (val) {
+            return val.length > 0;
+        },
+        message: 'This cannot be empty'
+    };
+
     // technically not a validation rule, this extender simply triggers validation
     // on another observable. Useful for validating a range of dates, for example,
     // where a change to startDate could cause endDate's dateIsAfter rule to be validated.
