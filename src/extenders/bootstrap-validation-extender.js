@@ -61,14 +61,13 @@ define(['knockout', 'jquery', 'lodash'],
         }
 
         function traverse(o, func) {
-            var self = this;
-
             _.forIn(o, function(value, key) {
                 if (key !== '__ko_mapping__') {
-                    func.apply(self, [key, value]);
+                    func(key, value);
 
-                    if (value !== null && typeof(value) === 'object') {
-                        traverse(value, func);
+                    var unwrapped = ko.unwrap(value);
+                    if (unwrapped !== null && typeof(unwrapped) === 'object') {
+                        traverse(unwrapped, func);
                     }
                 }
             });
