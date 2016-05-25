@@ -14,9 +14,8 @@
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.4",
     "knockout": "^3.4.0",
-    "knockout-validation": "^2.0.1",
-    "koco": "^1.0.0",
-    "lodash": "^4.13.1"
+    "knockout.validation": "git+https://github.com/W3Max/Knockout-Validation.git#55c2025",
+    "koco": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
