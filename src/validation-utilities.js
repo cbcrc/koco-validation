@@ -1,43 +1,21 @@
 // Copyright (c) CBC/Radio-Canada. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-import $ from 'jquery';
-import _ from 'lodash';
+class ValidationUtilities {
+  validateObservables(validatedObservables) {
+    if (validatedObservables && validatedObservables.length) {
+      const validationPromises = [];
 
+      for (let i = 0; i < validatedObservables.length; i++) {
+        validationPromises.push(validatedObservables[i].isValidAsync());
+      }
 
-var ValidationUtilities = function ValidationUtilities() {};
+      return Promise.all(validationPromises).then((values) => values.every(value => !!value));
+    }
 
-ValidationUtilities.prototype.validateObservables = function(validatedObservables) {
-    var promise = new $.Deferred(function(dfd) {
-        if (_.isEmpty(validatedObservables)) {
-            // When passing an empty array of validated observables, the form is considered valid.
-            dfd.resolve(true);
-        }
-
-        try {
-            var validationPromises = [];
-
-            for (var i = 0; i < validatedObservables.length; i++) {
-                validationPromises.push(validatedObservables[i].isValidAsync());
-            }
-
-            $.when.apply($, validationPromises).done(function() {
-                var isValid = true;
-
-                for (var j = 0; j < arguments.length; j++) {
-                    isValid = isValid && arguments[j];
-                }
-
-                dfd.resolve(isValid);
-            }).fail(function() {
-                dfd.reject.apply(this, arguments);
-            });
-        } catch (error) {
-            dfd.reject(error);
-        }
-    }).promise();
-
-    return promise;
-};
+    // When passing an empty array of validated observables, the form is considered valid.
+    return Promise.resolve(true);
+  }
+}
 
 export default new ValidationUtilities();
