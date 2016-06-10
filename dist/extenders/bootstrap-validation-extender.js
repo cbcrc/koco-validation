@@ -29,25 +29,6 @@
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
   };
 
-  function isValidAsync() {
-    return new Promise(function (resolve) {
-      traverse(target(), function (key, value) {
-        if (_knockout2.default.validation.utils.isValidatable(value) && value.validate) {
-          value.validate();
-        }
-      });
-
-      if (!target.isValidating()) {
-        resolve(target.isValid());
-      } else {
-        var subscription = target.isValidating.subscribe(function () {
-          resolve(target.isValid());
-          subscription.dispose();
-        });
-      }
-    });
-  }
-
   //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
   _knockout2.default.extenders.bootstrapValidation = function (target) {
     extendProperties(target);
@@ -64,7 +45,24 @@
       return false;
     });
 
-    target.isValidAsync = isValidAsync;
+    target.isValidAsync = function () {
+      return new Promise(function (resolve) {
+        traverse(target(), function (key, value) {
+          if (_knockout2.default.validation.utils.isValidatable(value) && value.validate) {
+            value.validate();
+          }
+        });
+
+        if (!target.isValidating()) {
+          resolve(target.isValid());
+        } else {
+          var subscription = target.isValidating.subscribe(function () {
+            resolve(target.isValid());
+            subscription.dispose();
+          });
+        }
+      });
+    };
 
     target.subscribe(function () {
       extendProperties(target);

@@ -4,26 +4,6 @@
 import ko from 'knockout';
 import _ from 'lodash';
 
-
-function isValidAsync() {
-  return new Promise((resolve) => {
-    traverse(target(), function(key, value) {
-      if (ko.validation.utils.isValidatable(value) && value.validate) {
-        value.validate();
-      }
-    });
-
-    if (!target.isValidating()) {
-      resolve(target.isValid());
-    } else {
-      var subscription = target.isValidating.subscribe(function() {
-        resolve(target.isValid());
-        subscription.dispose();
-      });
-    }
-  });
-}
-
 //TODO: https://github.com/Knockout-Contrib/Knockout-Validation/issues/145#issuecomment-73754720
 ko.extenders.bootstrapValidation = function(target) {
   extendProperties(target);
@@ -40,7 +20,24 @@ ko.extenders.bootstrapValidation = function(target) {
     return false;
   });
 
-  target.isValidAsync = isValidAsync;
+  target.isValidAsync = function() {
+    return new Promise((resolve) => {
+      traverse(target(), function(key, value) {
+        if (ko.validation.utils.isValidatable(value) && value.validate) {
+          value.validate();
+        }
+      });
+
+      if (!target.isValidating()) {
+        resolve(target.isValid());
+      } else {
+        var subscription = target.isValidating.subscribe(function() {
+          resolve(target.isValid());
+          subscription.dispose();
+        });
+      }
+    });
+  };
 
   target.subscribe(function() {
     extendProperties(target);
